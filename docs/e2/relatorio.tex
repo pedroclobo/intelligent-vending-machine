@@ -1,0 +1,123 @@
+\documentclass{article}
+\usepackage[a4paper, margin=1in]{geometry}
+\usepackage{setspace}
+\usepackage{enumitem}
+
+\pagenumbering{gobble}
+
+\newcommand{\select}{\sigma}
+\newcommand{\project}{\Pi}
+\newcommand{\njoin}{\bowtie}
+\newcommand{\rename}{\rho}
+\newcommand{\aggregatefn}{\mbox{\Large$G$}}
+
+
+\title{{\Huge Projeto BD - Parte 2}}
+\author{}
+\date{}
+\begin{document}
+
+	% Capa
+	\setstretch{2}
+	\maketitle
+	\begin{center}
+		{\LARGE Grupo 64}\\
+		\vspace{8mm}
+		{\LARGE Turno L08}\\
+		\vspace{8mm}
+		{\LARGE Prof. Miguel Garção Silva}\\
+
+		\vspace{7cm}
+
+		\begin{tabular}{|c|c|c|c|} \hline
+			\textbf{Aluno} & \textbf{Esforço (horas)} & \textbf{Esforço Relativo}\\ \hline
+			Bernardo Couto Melo (99057)	& 4 horas & 33\%\\ \hline
+			Guilherme Marques Pascoal (99079) & 4 horas & 33\%\\ \hline
+			Pedro Cerqueira Lobo (99115) & 4 horas & 33\%\\ \hline
+		\end{tabular}
+
+	\end{center}
+
+	\pagebreak
+
+	% Modelo Relacional
+	\section*{Modelo Relacional}
+	\setstretch{1}
+	\begin{itemize}
+
+	 	\item[]{Product(\underline{ean}, descr)}
+
+	 	\item[]{Category(\underline{name})}
+		\begin{itemize}
+			\item[$\bullet$]{IC-1: name tem de existir em Simple Category e/ou Super Category}
+			\item[$\bullet$]{IC-2: name não pode existir em Simple Category e Super Category simultaneamente}
+		\end{itemize}
+
+	 	\item[]{Simple Category(\underline{name})}
+		\begin{itemize}
+			\item[$\bullet$]{name: FK(Category)}
+		\end{itemize}
+
+	 	\item[]{Super Category(\underline{name})}
+		\begin{itemize}
+			\item[$\bullet$]{name: FK(Category)}
+		\end{itemize}
+
+	 	\item[]{Retailer(\underline{TIN}, name)}
+		\begin{itemize}
+			\item[$\bullet$]{unique(name)}
+		\end{itemize}
+
+		\item[]{IVM(\underline{serial number}, \underline{manuf})}
+
+		\item[]{Point of Retail()}
+
+		\item[]{Replenishment Event()}
+
+		\item[]{planogram()}
+
+		\item[]{of()}
+
+		\item[]{installed-at()}
+
+		\item[]{responsible-for()}
+
+		\item[]{replenisher-of()}
+
+		\item[]{replenishment()}
+
+		\item[]{has()}
+
+		\item[]{displayed()}
+
+		\item[]{has-other()}
+
+	\end{itemize}
+
+	\pagebreak
+
+	% Álgebra Relacional
+	\section*{Álgebra Relacional}
+	\setstretch{1}
+
+	\begin{enumerate}[label=(\arabic*)]
+		\item{}
+		\item{}
+		\item{}
+		\item{}
+	\end{enumerate}
+
+	\vspace{5mm}
+
+	% SQL
+	\section*{SQL}
+	\setstretch{1}
+
+	\begin{enumerate}[label=(\arabic*)]
+		\item{}
+		\item{}
+		\item{}
+		\item{}
+	\end{enumerate}
+
+\end{document}
