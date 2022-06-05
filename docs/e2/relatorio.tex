@@ -5,14 +5,23 @@
 
 \pagenumbering{gobble}
 
+\newcommand{\bpoint}{\item[$\bullet$]}
+
 \newcommand{\select}{\sigma}
 \newcommand{\project}{\Pi}
 \newcommand{\njoin}{\bowtie}
 \newcommand{\rename}{\rho}
-\newcommand{\aggregatefn}{\mbox{\Large$G$}}
+\newcommand{\aggregatefn}{\mbox{$G$}}
+
+\newenvironment{myitemize}
+{ \begin{itemize}
+    \setlength{\itemsep}{5pt}
+    \setlength{\parskip}{0pt}
+    \setlength{\parsep}{0pt}     }
+{ \end{itemize}                  }
 
 
-\title{{\Huge Projeto BD - Parte 2}}
+\title{{\Huge Projeto de BD - Parte 2}}
 \author{}
 \date{}
 \begin{document}
@@ -41,83 +50,223 @@
 	\pagebreak
 
 	% Modelo Relacional
-	\section*{Modelo Relacional}
 	\setstretch{1}
-	\begin{itemize}
+	\section*{Modelo Relacional}
+	\vspace{2mm}
+	\begin{myitemize}
 
-	 	\item[]{Product(\underline{ean}, descr)}
+		\item[] product(\underline{ean}, descr)
+		\begin{myitemize}
+				\bpoint RI-1: Todo o product (\textit{ean}) tem de participar na relação has
+		\end{myitemize}
 
-	 	\item[]{Category(\underline{name})}
-		\begin{itemize}
-			\item[$\bullet$]{IC-1: name tem de existir em Simple Category e/ou Super Category}
-			\item[$\bullet$]{IC-2: name não pode existir em Simple Category e Super Category simultaneamente}
-		\end{itemize}
+		\vspace{2mm}
 
-	 	\item[]{Simple Category(\underline{name})}
-		\begin{itemize}
-			\item[$\bullet$]{name: FK(Category)}
-		\end{itemize}
+		\item[] shelve(\underline{serial\_number}, \underline{manuf}, \underline{nr}, height, name)
+		\begin{myitemize}
+			\bpoint serial\_number, manuf: FK(ivm)
+			\bpoint name: FK(category)
+			\bpoint RI-2: (\textit{serial\_number}, \textit{manuf}, \textit{nr}) tem de existir em `ambient\_temp\_shelf', `warm\_shelf' ou `cold\_shelf'
+			\bpoint RI-3: (\textit{serial\_number}, \textit{manuf}, \textit{nr}) não pode existir ao mesmo tempo em `ambient\_temp\_shelf', `warm\_shelf' ou `cold\_shelf'
+		\end{myitemize}
 
-	 	\item[]{Super Category(\underline{name})}
-		\begin{itemize}
-			\item[$\bullet$]{name: FK(Category)}
-		\end{itemize}
+		\vspace{2mm}
 
-	 	\item[]{Retailer(\underline{TIN}, name)}
-		\begin{itemize}
-			\item[$\bullet$]{unique(name)}
-		\end{itemize}
+		\item[] ambient\_temp\_shelf(\underline{serial number}, \underline{manuf}, \underline{nr})
+		\begin{myitemize}
+			\bpoint (serial number, manuf, nr): FK(shelve)
+		\end{myitemize}
 
-		\item[]{IVM(\underline{serial number}, \underline{manuf})}
+		\vspace{2mm}
 
-		\item[]{Point of Retail()}
+		\item[] warm\_shelf(\underline{serial number}, \underline{manuf}, \underline{nr})
+		\begin{myitemize}
+			\bpoint (serial number, manuf, nr): FK(shelve)
+		\end{myitemize}
 
-		\item[]{Replenishment Event()}
+		\vspace{2mm}
 
-		\item[]{planogram()}
+		\item[]{cold\_shelf(\underline{serial number}, \underline{manuf}, \underline{nr})}
+		\begin{myitemize}
+			\bpoint (serial number, manuf, nr): FK(shelve)
+		\end{myitemize}
 
-		\item[]{of()}
+		\vspace{2mm}
 
-		\item[]{installed-at()}
+	 	\item[]{category(\underline{name})}
+		\begin{myitemize}
+			\bpoint RI-4: \textit{name} tem de existir em `simple\_category' ou `super\_category'
+			\bpoint RI-5: \textit{name} não pode existir ao mesmo tempo em `simple\_category' e `super\_category'
+		\end{myitemize}
 
-		\item[]{responsible-for()}
+		\vspace{2mm}
 
-		\item[]{replenisher-of()}
+	 	\item[] simple\_category(\underline{name})
+		\begin{myitemize}
+			\bpoint name: FK(category)
+		\end{myitemize}
 
-		\item[]{replenishment()}
+		\vspace{2mm}
 
-		\item[]{has()}
+	 	\item[] super\_category(\underline{name})
+		\begin{myitemize}
+			\bpoint name: FK(Category)
+			\bpoint RI-6: Toda a `super\_category' tem de participar na relação has-other
+		\end{myitemize}
 
-		\item[]{displayed()}
+		\vspace{2mm}
 
-		\item[]{has-other()}
+	 	\item[] retailer(\underline{tin}, name)
+		\begin{myitemize}
+			\bpoint unique(name)
+		\end{myitemize}
 
-	\end{itemize}
+		\vspace{2mm}
+
+		\item[] ivm(\underline{serial\_number}, \underline{manuf})
+
+		\vspace{2mm}
+
+		\item[] point\_of\_retail(\underline{address}, name)
+
+		\vspace{2mm}
+
+	\item[] replenishment\_event(\underline{ean}, \underline{serial\_number}, \underline{manuf}, \underline{nr}, \underline{instant}, tin, units)
+		\begin{myitemize}
+			\bpoint (ean, serial\_number, manuf, nr): FK(planogram)
+			\bpoint tin: FK(retailer)
+			\bpoint RI-7: units não pode exceder planogram.units
+			\bpoint RI-8: has.name de ean tem de ser igual a planogram.shelve.name
+			\bpoint RI-9: has.name de ean tem de ser igual a responsible-for.name de (serial\_number, manuf, tin)
+
+		\end{myitemize}
+
+        \pagebreak
+		\vspace{2mm}
+
+		\item[] planogram(\underline{ean}, \underline{serial\_number}, \underline{manuf}, \underline{nr}, faces, units, loc)
+		\begin{myitemize}
+			\bpoint ean: FK(product)
+			\bpoint (serial\_number, manuf, nr): FK(shelve)
+		\end{myitemize}
+
+		\vspace{2mm}
+
+		\item[] installed-at(\underline{serial\_number}, \underline{manuf}, address, nr)
+		\begin{myitemize}
+			\bpoint (serial\_number, manuf): FK(ivm)
+			\bpoint address: FK(point\_of\_retail)
+		\end{myitemize}
+
+		\vspace{2mm}
+
+		\item[] responsible-for(\underline{tin}, \underline{serial\_number}, \underline{manuf}, \underline{name})
+		\begin{myitemize}
+		    \bpoint tin: FK(retailer)
+			\bpoint (serial\_number, manuf): FK(ivm)
+			\bpoint name: FK(category)
+		\end{myitemize}
+
+		\vspace{2mm}
+
+		\item[] has(\underline{ean}, \underline{name})
+		\begin{myitemize}
+			\bpoint ean: FK(product)
+			\bpoint name: FK(category)
+		\end{myitemize}
+
+		\vspace{2mm}
+
+		\item[] has-other(\underline{category\_name}, super\_category\_name)
+		\begin{myitemize}
+			\bpoint category\_name: FK(category.name)
+			\bpoint super\_category\_name: FK(super\_category.name)
+			\bpoint RI-10: category\_name é sempre diferente de super\_category\_name
+			\bpoint RI-11: super\_category\_name não pode ser category\_name, se category\_name for super\_category\_name, tendo também em conta os descendentes indiretos
+
+		\end{myitemize}
+
+		\vspace{5mm}
+
+	\setstretch{1.5}
+
+	\end{myitemize}
 
 	\pagebreak
 
 	% Álgebra Relacional
+	\setstretch{1.5}
 	\section*{Álgebra Relacional}
-	\setstretch{1}
 
-	\begin{enumerate}[label=(\arabic*)]
-		\item{}
-		\item{}
-		\item{}
-		\item{}
+	\newcommand\responsiblefor{\mathop{\mbox{$responsible$-$\mathit{for}$}}}
+	\newcommand\hasother{\mathop{\mbox{$has$-$\mathit{other}$}}}
+
+	\begin{enumerate}[label=\arabic*)]
+
+		\item $A \leftarrow \rename_{(2 \mapsto units)}(_{ean} \aggregatefn_{SUM(units)}(\select_{instant > ``2021/12/31"}(replenishment\_event)))\\
+			\project_{ean, desc}(\select_{units > 10\ \wedge\ name = ``Barras\ Energeticas"}(A \njoin product \njoin has))$
+
+		\item $\project_{serial\_number}(\select_{ean = ``9002490100070"}(shelf \njoin has))$
+
+		\item $\aggregatefn_{COUNT()}(\select_{super\_category\_name = ``Sopas\ Take-Away"}(\hasother))$
+
+		\item $A \leftarrow \rename_{(2 \mapsto units)}(_{ean}\aggregatefn_{SUM(units)}(replenishment\_event))\\
+			   B \leftarrow \rename_{(1 \mapsto max)}(\aggregatefn_{MAX(units)}(A))\\
+			   \project_{ean, descr}(\select_{units=max}(product \njoin A \times B))$
+
 	\end{enumerate}
 
 	\vspace{5mm}
 
 	% SQL
-	\section*{SQL}
 	\setstretch{1}
+	\section*{SQL}
 
-	\begin{enumerate}[label=(\arabic*)]
-		\item{}
-		\item{}
-		\item{}
-		\item{}
+	\begin{enumerate}[label=\arabic*)]
+		\item
+			\begin{verbatim}
+				SELECT ean, descr
+				FROM product NATURAL JOIN has NATURAL JOIN (
+				     SELECT ean
+				     FROM replenishment_event
+				     WHERE instant > `2021/12/31'
+				     GROUP BY ean
+				     HAVING SUM(units) > 10
+				)
+				WHERE name = `Barras Energéticas';
+			\end{verbatim}
+
+		\vspace{5mm}
+
+		\item
+			\begin{verbatim}
+				SELECT serial_number
+				FROM shelf NATURAL JOIN has
+				WHERE ean = `9002490100070';
+			\end{verbatim}
+
+		\vspace{5mm}
+
+		\item
+			\begin{verbatim}
+				SELECT COUNT(*)
+				FROM has-other
+				WHERE super_category_name = `Sopas Take-Away';
+			\end{verbatim}
+
+		\vspace{5mm}
+
+		\item
+			\begin{verbatim}
+				SELECT ean, descr
+				FROM replenishment_event NATURAL JOIN product
+				GROUP BY ean
+				HAVING SUM(units) >= ALL (
+				    SELECT SUM(units)
+				    FROM replenishment_event
+				    GROUP BY ean
+				);
+			\end{verbatim}
 	\end{enumerate}
 
 \end{document}
