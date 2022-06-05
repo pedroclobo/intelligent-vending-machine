@@ -15,10 +15,10 @@
 
 \newenvironment{myitemize}
 { \begin{itemize}
-    \setlength{\itemsep}{5pt}
-    \setlength{\parskip}{0pt}
-    \setlength{\parsep}{0pt}     }
-{ \end{itemize}                  }
+	\setlength{\itemsep}{5pt}
+	\setlength{\parskip}{0pt}
+	\setlength{\parsep}{0pt} }
+{ \end{itemize}	}
 
 
 \title{{\Huge Projeto de BD - Parte 2}}
@@ -141,7 +141,7 @@
 
 		\end{myitemize}
 
-        \pagebreak
+		\pagebreak
 		\vspace{2mm}
 
 		\item[] planogram(\underline{ean}, \underline{serial\_number}, \underline{manuf}, \underline{nr}, faces, units, loc)
@@ -162,7 +162,7 @@
 
 		\item[] responsible-for(\underline{tin}, \underline{serial\_number}, \underline{manuf}, \underline{name})
 		\begin{myitemize}
-		    \bpoint tin: FK(retailer)
+			\bpoint tin: FK(retailer)
 			\bpoint (serial\_number, manuf): FK(ivm)
 			\bpoint name: FK(category)
 		\end{myitemize}
@@ -204,15 +204,15 @@
 	\begin{enumerate}[label=\arabic*)]
 
 		\item $A \leftarrow \rename_{(2 \mapsto units)}(_{ean} \aggregatefn_{SUM(units)}(\select_{instant > ``2021/12/31"}(replenishment\_event)))\\
-			\project_{ean, desc}(\select_{units > 10\ \wedge\ name = ``Barras\ Energeticas"}(A \njoin product \njoin has))$
+		       \project_{ean, desc}(\select_{units > 10\ \wedge\ name = ``Barras\ Energeticas"}(A \njoin product \njoin has))$
 
 		\item $\project_{serial\_number}(\select_{ean = ``9002490100070"}(shelf \njoin has))$
 
 		\item $\aggregatefn_{COUNT()}(\select_{super\_category\_name = ``Sopas\ Take-Away"}(\hasother))$
 
 		\item $A \leftarrow \rename_{(2 \mapsto units)}(_{ean}\aggregatefn_{SUM(units)}(replenishment\_event))\\
-			   B \leftarrow \rename_{(1 \mapsto max)}(\aggregatefn_{MAX(units)}(A))\\
-			   \project_{ean, descr}(\select_{units=max}(product \njoin A \times B))$
+		       B \leftarrow \rename_{(1 \mapsto max)}(\aggregatefn_{MAX(units)}(A))\\
+		       \project_{ean, descr}(\select_{units=max}(product \njoin A \times B))$
 
 	\end{enumerate}
 
@@ -227,11 +227,11 @@
 			\begin{verbatim}
 				SELECT ean, descr
 				FROM product NATURAL JOIN has NATURAL JOIN (
-				     SELECT ean
-				     FROM replenishment_event
-				     WHERE instant > `2021/12/31'
-				     GROUP BY ean
-				     HAVING SUM(units) > 10
+				    SELECT ean
+				    FROM replenishment_event
+				    WHERE instant > `2021/12/31'
+				    GROUP BY ean
+				    HAVING SUM(units) > 10
 				)
 				WHERE name = `Barras Energéticas';
 			\end{verbatim}
