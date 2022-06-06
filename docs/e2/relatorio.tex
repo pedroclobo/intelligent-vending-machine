@@ -57,7 +57,7 @@
 
 		\item[] product(\underline{ean}, descr)
 		\begin{myitemize}
-				\bpoint RI-1: Todo o product (\textit{ean}) tem de participar na relação has
+				\bpoint RI-1: Todo o product (ean) tem de participar na relação has
 		\end{myitemize}
 
 		\vspace{2mm}
@@ -66,8 +66,8 @@
 		\begin{myitemize}
 			\bpoint serial\_number, manuf: FK(ivm)
 			\bpoint name: FK(category)
-			\bpoint RI-2: (\textit{serial\_number}, \textit{manuf}, \textit{nr}) tem de existir em `ambient\_temp\_shelf', `warm\_shelf' ou `cold\_shelf'
-			\bpoint RI-3: (\textit{serial\_number}, \textit{manuf}, \textit{nr}) não pode existir ao mesmo tempo em `ambient\_temp\_shelf', `warm\_shelf' ou `cold\_shelf'
+			\bpoint RI-2: (serial\_number, manuf, nr) tem de existir em `ambient\_temp\_shelf', `warm\_shelf' ou `cold\_shelf'
+			\bpoint RI-3: (serial\_number, manuf, nr) não pode existir ao mesmo tempo em `ambient\_temp\_shelf', `warm\_shelf' ou `cold\_shelf'
 		\end{myitemize}
 
 		\vspace{2mm}
@@ -95,8 +95,8 @@
 
 	 	\item[]{category(\underline{name})}
 		\begin{myitemize}
-			\bpoint RI-4: \textit{name} tem de existir em `simple\_category' ou `super\_category'
-			\bpoint RI-5: \textit{name} não pode existir ao mesmo tempo em `simple\_category' e `super\_category'
+			\bpoint RI-4: name tem de existir em `simple\_category' ou `super\_category'
+			\bpoint RI-5: name não pode existir ao mesmo tempo em `simple\_category' e `super\_category'
 		\end{myitemize}
 
 		\vspace{2mm}
@@ -191,6 +191,15 @@
 	\setstretch{1.5}
 
 	\end{myitemize}
+
+	As restrições de integridade do modelo Entidade-Associação que não são passíveis de conversão para o modelo relacional são:
+	\begin{itemize}
+		\item (RI-1) Uma Categoria não pode estar contida em si própria
+		\item (RI-2) Não podem existir ciclos nas hierarquias de Categorias
+		\item (RI-4) O número de unidades repostas num Evento de Reposição não pode exceder o número de unidades especificado no Planograma
+		\item (RI-5) Um Produto só pode ser reposto numa Prateleira onde sua Categoria seja apresentada
+		\item (RI-6) Um Produto só pode ser reposto pelo Retalhista responsável pela Categoria do Produto
+	\end{itemize}
 
 	\pagebreak
 
