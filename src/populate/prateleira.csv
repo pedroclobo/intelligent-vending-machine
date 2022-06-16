@@ -1,20 +1,30 @@
-1,BGxxZkoC,Continente,10,Barras Energeticas
-2,BGxxZkoC,Continente,15,Sopas Take-Away
-3,BGxxZkoC,Continente,12,Refrigerante
-4,BGxxZkoC,Continente,20,Bebida
-5,BGxxZkoC,Continente,18,Comida
-1,qE5EmNJw,Pingo Doce,10,Barras Energeticas
-2,qE5EmNJw,Pingo Doce,12,Sopas Take-Away
-3,qE5EmNJw,Pingo Doce,15,Refrigerante
-4,qE5EmNJw,Pingo Doce,20,Bebida
-5,qE5EmNJw,Pingo Doce,18,Comida
-1,RmEkFWhc,Lidl,18,Barras Energeticas
-2,RmEkFWhc,Lidl,12,Sopas Take-Away
-3,RmEkFWhc,Lidl,5,Comida
-4,RmEkFWhc,Lidl,10,Bebida
-5,RmEkFWhc,Lidl,17,Refrigerante
-1,tQgohatj,Aldi,12,Barras Energeticas
-2,tQgohatj,Aldi,5,Sopas Take-Away
-3,tQgohatj,Aldi,10,Bebida
-4,tQgohatj,Aldi,12,Comida
-5,tQgohatj,Aldi,13,Refrigerante
+1,27828348,Pingo Doce,10,Comidas
+2,27828348,Pingo Doce,15,Sopas Take-Away
+3,27828348,Pingo Doce,12,Refrigerantes
+4,27828348,Pingo Doce,20,Bebidas
+5,27828348,Pingo Doce,18,Bebidas Alcoolicas
+1,32956833,Continente,17,Bolachas
+2,32956833,Continente,12,Doces
+3,32956833,Continente,10,Salgados
+4,32956833,Continente,8,Carnes
+5,32956833,Continente,4,Salgados
+1,74639833,Aldi,10,Sopas Take-Away
+2,74639833,Aldi,8,Salgados
+3,74639833,Aldi,2,Doces
+4,74639833,Aldi,12,Comidas
+5,74639833,Aldi,11,Bolachas
+1,76275876,CascaisShopping,8,Bebidas
+2,76275876,CascaisShopping,7,Barras Energeticas
+3,76275876,CascaisShopping,9,Doces
+4,76275876,CascaisShopping,5,Comidas
+5,76275876,CascaisShopping,12,Bebidas
+1,86998436,OeirasPark,11,Bebidas
+2,86998436,OeirasPark,2,Barras Energeticas
+3,86998436,OeirasPark,13,Doces
+4,86998436,OeirasPark,4,Comidas
+5,86998436,OeirasPark,17,Carnes
+1,93999269,Lidl,9,Bebidas
+2,93999269,Lidl,8,Salgados
+3,93999269,Lidl,17,Carnes
+4,93999269,Lidl,7,Bolachas
+5,93999269,Lidl,25,Salgados
