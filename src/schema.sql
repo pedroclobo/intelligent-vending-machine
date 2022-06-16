@@ -101,8 +101,7 @@ CREATE TABLE planograma (
 
 CREATE TABLE retalhista (
 	tin INT NOT NULL,
-	name VARCHAR(255) NOT NULL,
-	UNIQUE(name),
+	name VARCHAR(255) NOT NULL UNIQUE,
 	PRIMARY KEY(tin)
 );
 
@@ -129,3 +128,29 @@ CREATE TABLE evento_reposicao (
 	FOREIGN KEY(tin) REFERENCES retalhista(tin) ON DELETE CASCADE,
 	PRIMARY KEY(ean, nro, num_serie, fabricante, instante)
 );
+
+
+
+DROP TRIGGER IF EXISTS ri_re2_insert ON categoria_simples;
+DROP TRIGGER IF EXISTS ri_re2_update ON categoria_simples;
+
+CREATE OR REPLACE FUNCTION ri_re2_proc()
+RETURNS TRIGGER
+AS $$
+BEGIN
+	IF new.nome IN (SELECT nome FROM super_categoria) THEN
+		RAISE EXCEPTION	'Uma categoria simples não pode ser super categoria.';
+	END IF;
+
+	RETURN NEW;
+END
+$$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER ri_re2_insert
+BEFORE INSERT ON categoria_simples
+FOR EACH ROW EXECUTE PROCEDURE ri_re2_proc();
+
+CREATE TRIGGER ri_re2_update
+BEFORE UPDATE ON categoria_simples
+FOR EACH ROW EXECUTE PROCEDURE ri_re2_proc();
