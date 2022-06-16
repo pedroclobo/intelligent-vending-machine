@@ -40,14 +40,13 @@ CREATE TABLE tem_outra (
 );
 
 CREATE TABLE produto (
-	ean INT NOT NULL,
+	ean CHAR(13) NOT NULL,
 	descr TEXT NOT NULL,
-	CHECK (ean BETWEEN 1000000000000 and 9999999999999),
 	PRIMARY KEY(ean)
 );
 
 CREATE TABLE tem_categoria (
-	ean INT NOT NULL,
+	ean CHAR(13) NOT NULL,
 	nome VARCHAR(255) NOT NULL,
 	FOREIGN KEY(ean) REFERENCES produto(ean) ON DELETE CASCADE,
 	FOREIGN KEY(nome) REFERENCES categoria(nome) ON DELETE CASCADE,
@@ -84,11 +83,11 @@ CREATE TABLE prateleira (
 	nome VARCHAR(255) NOT NULL,
 	FOREIGN KEY(num_serie, fabricante) REFERENCES ivm(num_serie, fabricante) ON DELETE CASCADE,
 	FOREIGN KEY(nome) REFERENCES categoria(nome) ON DELETE CASCADE,
-	PRIMARY KEY (nro, num_serie, fabricante)
+	PRIMARY KEY(nro, num_serie, fabricante)
 );
 
 CREATE TABLE planograma (
-	ean INT NOT NULL,
+	ean CHAR(13) NOT NULL,
 	nro INT NOT NULL,
 	num_serie VARCHAR(255) NOT NULL,
 	fabricante VARCHAR(255) NOT NULL,
@@ -115,11 +114,11 @@ CREATE TABLE responsavel_por (
 	FOREIGN KEY(num_serie, fabricante) REFERENCES ivm(num_serie, fabricante) ON DELETE CASCADE,
 	FOREIGN KEY(tin) REFERENCES retalhista(tin) ON DELETE CASCADE,
 	FOREIGN KEY(nome_cat) REFERENCES categoria(nome) ON DELETE CASCADE,
-	PRIMARY KEY(num_serie, fabricante)
+	PRIMARY KEY(nome_cat, num_serie, fabricante)
 );
 
 CREATE TABLE evento_reposicao (
-	ean INT NOT NULL,
+	ean CHAR(13) NOT NULL,
 	nro INT NOT NULL,
 	num_serie VARCHAR(255) NOT NULL,
 	fabricante VARCHAR(255) NOT NULL,

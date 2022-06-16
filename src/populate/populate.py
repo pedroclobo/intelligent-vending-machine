@@ -1,89 +1,150 @@
-import string
-alphabet = dict.fromkeys(string.ascii_uppercase, 0)
-product = ["Cat_Hands","Cat_Shoe","Cone_Shelf","Post_office_Video_games","YouTube_Laptop","System_Monster","Drugs_Boat","Crab_Whale","Shower_Body","Shoe_Toolbox", "Water","Solar","Body","Soap","Breakfast","Poop","Ice_cream","Male","Solar","Book", "Cone","Kitty","Running","Kitty", "Plants", "Cat","Dislike","Dog","Floppy_Disk","BBQ"]
-category = ["Fantasy","Fiction", "Animals", "Condiments", "Arms", "Countries", "Roads"]
+def categoria():
+	categoria = [
+	    line.strip().split(",") for line in open("categoria.csv", "r")
+	]
+	for nome in categoria:
+		ins = "INSERT INTO categoria VALUES ('{}');\n".format(nome[0])
+		file.write(ins)
 
-maker = ["Andrade - Lima", "Fernandes, Morais and Raposo", "Amaral, Gomes and Oliveira", 
-"Coelho Comercio", "Moreira S.A.", "Pinheiro S.A.", "Moura, Pinheiro and Marques",
-"Mota, Melo and Paiva", "Vaz e Associados", "Gomes e Associados", "Moreira - Faria",
-"Jesus - Ferreira", "Castro, Morais and Paiva", "Antunes - Mota", "Brito - Henriques", 
-"Cardoso - Machado", "Marques LTDA", "Loureiro - Esteves", "Carneiro S.A",
-"Saraiva - Ribeiro"]
 
-simple_cat = []
-super_cat = []
-has_others = []
-has_otherc = []
-file_object = open('populateWithoutDB.sql', 'a')
+def categoria_simples():
+	categoria_simples = [
+	    line.strip().split(",") for line in open("categoria_simples.csv", "r")
+	]
+	for nome in categoria_simples:
+		ins = "INSERT INTO categoria_simples VALUES ('{}');\n".format(nome[0])
+		file.write(ins)
 
-def create_product():
-    i = 0
-    for p in product:
-        ins = 'INSERT INTO produto VALUES (' + str(i) + ', "'+ p +'")\n'
-        file_object.write(ins)
-        i+=1
-    file_object.write('\n')
 
-def create_simple_category():
-    for c in simple_cat:
-        ins = 'INSERT INTO categoria_simples VALUES ("'+ c +'")\n'
-        file_object.write(ins)
-    file_object.write('\n')
+def super_categoria():
+	super_categoria = [
+	    line.strip().split(",") for line in open("super_categoria.csv", "r")
+	]
+	for nome in super_categoria:
+		ins = "INSERT INTO super_categoria VALUES ('{}');\n".format(nome[0])
+		file.write(ins)
 
-def create_super_category():
-    for s in super_cat:
-        ins = 'INSERT INTO super_categoria VALUES ("'+ s +'")\n'
-        file_object.write(ins)
-    file_object.write('\n')
 
-def create_has_other():
-    i = 0
-    size = len(has_otherc)
-    while(i < size):
-        ins = 'INSERT INTO tem_outra VALUES ("' + has_others[i] + '", "'+ has_otherc[i] +'")\n'
-        file_object.write(ins)
-        i+=1
-    file_object.write('\n')
+def tem_outra():
+	tem_outra = [
+	    line.strip().split(",") for line in open("tem_outra.csv", "r")
+	]
+	for nome_super_categoria, nome_categoria in tem_outra:
+		ins = "INSERT INTO tem_outra VALUES ('{}', '{}');\n".format(
+		    nome_super_categoria, nome_categoria)
+		file.write(ins)
 
-def create_has_cat():
-    i = 0
-    size = len(category)
-    while(i < size):
-        ins = 'INSERT INTO tem_categoria VALUES (' + i + ', "'+ category[i] +'")\n'
-        file_object.write(ins)
-        i+=1
-    file_object.write('\n')
 
-def create_category():
-    super = dict.fromkeys(string.ascii_uppercase, "")
-    for p in category:
-        ins = 'INSERT INTO categoria VALUES ("'+ p +'")\n'
-        file_object.write(ins)
-        if alphabet[p[0]] == 0:
-            alphabet[p[0]] += 1
-            super[p[0]] = p
-            simple_cat.append(p) 
-        else:
-            simple_cat.remove(super[p[0]]) 
-            super_cat.append(super[p[0]]) 
-            simple_cat.append(p) 
-            has_others.append(super[p[0]]) 
-            has_otherc.append(p) 
-    file_object.write('\n')
+def produto():
+	produto = [line.strip().split(",") for line in open("produto.csv", "r")]
+	for ean, descr in produto:
+		ins = "INSERT INTO produto VALUES ('{}', '{}');\n".format(ean, descr)
+		file.write(ins)
 
-def create_ivm():
-    i = 0
-    for m in maker:
-        ins = 'INSERT INTO ivm VALUES (' + str(i) + ', "'+ m +'")\n'
-        file_object.write(ins)
-        i+=1
-    file_object.write('\n')
 
-create_product()
-create_category()
-create_super_category()
-create_simple_category()
-create_has_other()
-create_has_cat()
-create_ivm()
-file_object.close()
+def tem_categoria():
+	tem_categoria = [
+	    line.strip().split(",") for line in open("tem_categoria.csv", "r")
+	]
+	for ean, nome in tem_categoria:
+		ins = "INSERT INTO tem_categoria VALUES ('{}', '{}');\n".format(
+		    ean, nome)
+		file.write(ins)
+
+
+def ivm():
+	ivm = [line.strip().split(",") for line in open("ivm.csv", "r")]
+	for num_serie, fabricante in ivm:
+		ins = "INSERT INTO ivm VALUES ('{}', '{}');\n".format(
+		    num_serie, fabricante)
+		file.write(ins)
+
+
+def ponto_de_retalho():
+	ponto_de_retalho = [
+	    line.strip().split(",") for line in open("ponto_de_retalho.csv", "r")
+	]
+	for nome, distrito, concelho in ponto_de_retalho:
+		ins = "INSERT INTO ponto_de_retalho VALUES ('{}', '{}', '{}');\n".format(
+		    nome, distrito, concelho)
+		file.write(ins)
+
+
+def instalada_em():
+	instalada_em = [
+	    line.strip().split(",") for line in open("instalada_em.csv", "r")
+	]
+	for num_serie, fabricante, local in instalada_em:
+		ins = "INSERT INTO instalada_em VALUES ('{}', '{}', '{}');\n".format(
+		    num_serie, fabricante, local)
+		file.write(ins)
+
+
+def prateleira():
+	prateleira = [
+	    line.strip().split(",") for line in open("prateleira.csv", "r")
+	]
+	for nro, num_serie, fabricante, altura, nome in prateleira:
+		ins = "INSERT INTO prateleira VALUES ('{}', '{}', '{}', '{}', '{}');\n".format(
+		    nro, num_serie, fabricante, altura, nome)
+		file.write(ins)
+
+
+def planograma():
+	planograma = [
+	    line.strip().split(",") for line in open("planograma.csv", "r")
+	]
+	for ean, nro, num_serie, fabricante, faces, unidades, loc in planograma:
+		ins = "INSERT INTO planograma VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}');\n".format(
+		    ean, nro, num_serie, fabricante, faces, unidades, loc)
+		file.write(ins)
+
+
+def retalhista():
+	retalhista = [
+	    line.strip().split(",") for line in open("retalhista.csv", "r")
+	]
+	for tin, name in retalhista:
+		ins = "INSERT INTO retalhista VALUES ('{}', '{}');\n".format(tin, name)
+		file.write(ins)
+
+
+def responsavel_por():
+	responsavel_por = [
+	    line.strip().split(",") for line in open("responsavel_por.csv", "r")
+	]
+	for nome_cat, tin, num_serie, fabricante in responsavel_por:
+		ins = "INSERT INTO responsavel_por VALUES ('{}', '{}', '{}', '{}');\n".format(
+		    nome_cat, tin, num_serie, fabricante)
+		file.write(ins)
+
+
+def evento_reposicao():
+	evento_reposicao = [
+	    line.strip().split(",") for line in open("evento_reposicao.csv", "r")
+	]
+	for ean, nro, num_serie, fabricante, instante, unidades, tin in evento_reposicao:
+		ins = "INSERT INTO evento_reposicao VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}');\n".format(
+		    ean, nro, num_serie, fabricante, instante, unidades, tin)
+		file.write(ins)
+
+
+if __name__ == "__main__":
+	file = open('../populate.sql', 'w')
+
+	categoria()
+	super_categoria()
+	categoria_simples()
+	produto()
+	retalhista()
+	ivm()
+	prateleira()
+	ponto_de_retalho()
+	planograma()
+	instalada_em()
+	tem_categoria()
+	tem_outra()
+	evento_reposicao()
+	responsavel_por()
+
+	file.close()
