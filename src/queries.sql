@@ -3,7 +3,7 @@ FROM responsavel_por NATURAL JOIN retalhista
 GROUP BY name
 HAVING COUNT(DISTINCT nome_cat) >= ALL (
 	SELECT COUNT(DISTINCT nome_cat)
-	FROM responsavel_por
+	FROM responsavel_por NATURAL JOIN retalhista
 	GROUP BY name
 );
 
