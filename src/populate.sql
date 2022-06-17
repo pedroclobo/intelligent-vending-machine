@@ -86,6 +86,7 @@ INSERT INTO ponto_de_retalho VALUES ('Pingo Doce - Cascais', 'Lisboa', 'Cascais'
 
 INSERT INTO planograma VALUES ('2161546484063', '1', '27828348', 'Pingo Doce', '2', '10', '5');
 INSERT INTO planograma VALUES ('2161546484063', '4', '74639833', 'Aldi', '4', '20', '1');
+INSERT INTO planograma VALUES ('2161546484063', '4', '86998436', 'OeirasPark', '2', '15', '3');
 INSERT INTO planograma VALUES ('2748425344955', '1', '76275876', 'CascaisShopping', '6', '15', '2');
 INSERT INTO planograma VALUES ('2748425344955', '5', '76275876', 'CascaisShopping', '12', '25', '1');
 
@@ -124,11 +125,21 @@ INSERT INTO tem_outra VALUES ('Comidas', 'Sopas Take-Away');
 
 INSERT INTO evento_reposicao VALUES ('2161546484063', '1', '27828348', 'Pingo Doce', '2020-12-01 12:43:01', '9', '3');
 INSERT INTO evento_reposicao VALUES ('2161546484063', '4', '74639833', 'Aldi', '2020-12-02 21:14:02', '10', '2');
-INSERT INTO evento_reposicao VALUES ('2748425344955', '1', '76275876', 'CascaisShopping', '2020-12-04 13:43:12', '10', '1');
 INSERT INTO evento_reposicao VALUES ('2748425344955', '5', '76275876', 'CascaisShopping', '2020-12-03 12:17:30', '24', '4');
 
+INSERT INTO responsavel_por VALUES ('Barras Energeticas', '3', '86998436', 'OeirasPark');
+INSERT INTO responsavel_por VALUES ('Bebidas Alcoolicas', '3', '27828348', 'Pingo Doce');
+INSERT INTO responsavel_por VALUES ('Bebidas', '2', '27828348', 'Pingo Doce');
+INSERT INTO responsavel_por VALUES ('Bolachas', '1', '32956833', 'Continente');
+INSERT INTO responsavel_por VALUES ('Bolachas', '3', '93999269', 'Lidl');
+INSERT INTO responsavel_por VALUES ('Carnes', '3', '93999269', 'Lidl');
+INSERT INTO responsavel_por VALUES ('Carnes', '4', '32956833', 'Continente');
 INSERT INTO responsavel_por VALUES ('Comidas', '1', '27828348', 'Pingo Doce');
-INSERT INTO responsavel_por VALUES ('Sopas Take-Away', '2', '27828348', 'Pingo Doce');
+INSERT INTO responsavel_por VALUES ('Comidas', '5', '74639833', 'Aldi');
+INSERT INTO responsavel_por VALUES ('Doces', '2', '86998436', 'OeirasPark');
+INSERT INTO responsavel_por VALUES ('Doces', '3', '32956833', 'Continente');
 INSERT INTO responsavel_por VALUES ('Refrigerantes', '3', '27828348', 'Pingo Doce');
-INSERT INTO responsavel_por VALUES ('Bebidas', '4', '27828348', 'Pingo Doce');
-INSERT INTO responsavel_por VALUES ('Bebidas Alcoolicas', '5', '27828348', 'Pingo Doce');
+INSERT INTO responsavel_por VALUES ('Salgados', '3', '32956833', 'Continente');
+INSERT INTO responsavel_por VALUES ('Salgados', '6', '74639833', 'Aldi');
+INSERT INTO responsavel_por VALUES ('Sopas Take-Away', '3', '74639833', 'Aldi');
+INSERT INTO responsavel_por VALUES ('Sopas Take-Away', '5', '27828348', 'Pingo Doce');
