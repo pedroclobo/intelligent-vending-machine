@@ -3,6 +3,10 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>Menu Principal - Flask</title>
+		<link
+			rel="stylesheet"
+			href="{{ url_for('static', filename='main.css') }}"
+		/>
 	</head>
 	<body style="padding: 20px">
 		<table border="2px">
@@ -14,7 +18,7 @@
 			<tbody>
 				<tr>
 					<td>
-						<a href="adicionar_categoria/input">Adicionar Categoria</a>
+						<a href="adicionar_categoria">Adicionar Categoria</a>
 					</td>
 				</tr>
 				<tr>

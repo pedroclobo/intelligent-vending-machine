@@ -3,10 +3,14 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>Adicionar Categoria - Flask</title>
+		<link
+			rel="stylesheet"
+			href="{{ url_for('static', filename='main.css') }}"
+		/>
 	</head>
 	<body>
 		<h3>Adicionar Categoria</h3>
-		<form action="update" method="post">
+		<form action="adicionar_categoria/update" method="post">
 			<p>Nome da Categoria: <input type="text" name="nome" /></p>
 			<p><input type="submit" value="Submit" /></p>
 		</form>

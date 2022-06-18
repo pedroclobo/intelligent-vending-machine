@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<title>Listar categorias - Flask</title>
+		<title>Listar Eventos de Reposição - Flask</title>
 		<link
 			rel="stylesheet"
 			href="{{ url_for('static', filename='main.css') }}"
@@ -13,17 +13,25 @@
 		<table border="2px">
 			<thead>
 				<tr>
-					<th>Nome</th>
-					<th>Remover</th>
+					<th>EAN</th>
+					<th>Nro</th>
+					<th>Número de Série</th>
+					<th>Fabricante</th>
+					<th>Instante</th>
+					<th>Unidades</th>
+					<th>TIN</th>
 				</tr>
 			</thead>
 			<tbody>
 				{% for record in cursor %}
 				<tr>
 					<td>{{ record[0] }}</td>
-					<td>
-						<a href="remover_categoria/update?nome={{ record[0] }}">Remover</a>
-					</td>
+					<td>{{ record[1] }}</td>
+					<td>{{ record[2] }}</td>
+					<td>{{ record[3] }}</td>
+					<td>{{ record[4] }}</td>
+					<td>{{ record[5] }}</td>
+					<td>{{ record[6] }}</td>
 				</tr>
 				{% endfor %}
 			</tbody>

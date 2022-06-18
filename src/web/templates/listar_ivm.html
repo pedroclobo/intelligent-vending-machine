@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<title>Listar categorias - Flask</title>
+		<title>Listar IVM's - Flask</title>
 		<link
 			rel="stylesheet"
 			href="{{ url_for('static', filename='main.css') }}"
@@ -13,16 +13,18 @@
 		<table border="2px">
 			<thead>
 				<tr>
-					<th>Nome</th>
-					<th>Remover</th>
+					<th>Número de Série</th>
+					<th>Fabrincante de Série</th>
+					<th>Listar</th>
 				</tr>
 			</thead>
 			<tbody>
 				{% for record in cursor %}
 				<tr>
 					<td>{{ record[0] }}</td>
+					<td>{{ record[1] }}</td>
 					<td>
-						<a href="remover_categoria/update?nome={{ record[0] }}">Remover</a>
+						<a href="eventos_reposicao/update?num_serie={{ record[0] }}">Listar</a>
 					</td>
 				</tr>
 				{% endfor %}
