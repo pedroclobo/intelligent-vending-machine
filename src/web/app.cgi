@@ -127,4 +127,41 @@ def eventos_reposicao():
 		dbConn.close()
 
 
+@app.route('/sub_categorias')
+def menu_sub_categorias():
+	dbConn = None
+	cursor = None
+	try:
+		dbConn = psycopg2.connect(DB_CONNECTION_STRING)
+		cursor = dbConn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+		query = "SELECT * FROM super_categoria;"
+		cursor.execute(query)
+		return render_template("listar_super_categoria.html", cursor=cursor)
+	except Exception as e:
+		return str(e)
+	finally:
+		cursor.close()
+		dbConn.close()
+
+
+@app.route('/sub_categorias/update')
+def sub_categorias():
+	dbConn = None
+	cursor = None
+	try:
+		dbConn = psycopg2.connect(DB_CONNECTION_STRING)
+		cursor = dbConn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+		nome = request.args.get("nome")
+		query = 'SELECT nome_categoria FROM tem_outra WHERE nome_super_categoria = %s'
+		data = (nome, )
+		cursor.execute(query, data)
+		return render_template("listar_sub_categoria.html", cursor=cursor)
+	except Exception as e:
+		return str(e)
+	finally:
+		dbConn.commit()
+		cursor.close()
+		dbConn.close()
+
+
 CGIHandler().run(app)
