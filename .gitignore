@@ -1,2 +1,5 @@
 *.aux
 *.log
+64-relatorio.pdf
+__pycache__
+auth.py
