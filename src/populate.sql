@@ -26,35 +26,37 @@ CREATE TABLE categoria_simples (
 
 CREATE TABLE super_categoria (
 	nome VARCHAR(255) NOT NULL,
-	FOREIGN KEY(nome) REFERENCES categoria(nome) ON DELETE CASCADE,
+	FOREIGN KEY(nome) REFERENCES categoria(nome) ON DELETE CASCADE ON UPDATE CASCADE,
 	PRIMARY KEY(nome)
 );
 
 CREATE TABLE tem_outra (
 	nome_super_categoria VARCHAR(255) NOT NULL,
 	nome_categoria VARCHAR(255) NOT NULL,
-	FOREIGN KEY(nome_super_categoria) REFERENCES super_categoria(nome) ON DELETE CASCADE,
-	FOREIGN KEY(nome_categoria) REFERENCES categoria(nome) ON DELETE CASCADE,
+	FOREIGN KEY(nome_super_categoria) REFERENCES super_categoria(nome) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY(nome_categoria) REFERENCES categoria(nome) ON DELETE CASCADE ON UPDATE CASCADE,
 	CHECK(nome_super_categoria <> nome_categoria),
 	PRIMARY KEY(nome_categoria)
 );
 
 CREATE TABLE produto (
 	ean CHAR(13) NOT NULL,
+	cat VARCHAR(255) NOT NULL,
 	descr TEXT NOT NULL,
+	FOREIGN KEY(cat) REFERENCES categoria(nome) ON DELETE CASCADE ON UPDATE CASCADE,
 	PRIMARY KEY(ean)
 );
 
 CREATE TABLE tem_categoria (
 	ean CHAR(13) NOT NULL,
 	nome VARCHAR(255) NOT NULL,
-	FOREIGN KEY(ean) REFERENCES produto(ean) ON DELETE CASCADE,
-	FOREIGN KEY(nome) REFERENCES categoria(nome) ON DELETE CASCADE,
+	FOREIGN KEY(ean) REFERENCES produto(ean) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY(nome) REFERENCES categoria(nome) ON DELETE CASCADE ON UPDATE CASCADE,
 	PRIMARY KEY(ean, nome)
 );
 
 CREATE TABLE ivm (
-	num_serie VARCHAR(255) NOT NULL,
+	num_serie SERIAL NOT NULL,
 	fabricante VARCHAR(255) NOT NULL,
 	PRIMARY KEY(num_serie, fabricante)
 );
@@ -67,65 +69,65 @@ CREATE TABLE ponto_de_retalho (
 );
 
 CREATE TABLE instalada_em (
-	num_serie VARCHAR(255) NOT NULL,
+	num_serie SERIAL NOT NULL,
 	fabricante VARCHAR(255) NOT NULL,
 	local VARCHAR(255) NOT NULL,
-	FOREIGN KEY(num_serie, fabricante) REFERENCES ivm(num_serie, fabricante) ON DELETE CASCADE,
-	FOREIGN KEY(local) REFERENCES ponto_de_retalho(nome) ON DELETE CASCADE,
+	FOREIGN KEY(num_serie, fabricante) REFERENCES ivm(num_serie, fabricante) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY(local) REFERENCES ponto_de_retalho(nome) ON DELETE CASCADE ON UPDATE CASCADE,
 	PRIMARY KEY(num_serie, fabricante)
 );
 
 CREATE TABLE prateleira (
 	nro INT NOT NULL,
-	num_serie VARCHAR(255) NOT NULL,
+	num_serie SERIAL NOT NULL,
 	fabricante VARCHAR(255) NOT NULL,
 	altura INT NOT NULL,
 	nome VARCHAR(255) NOT NULL,
-	FOREIGN KEY(num_serie, fabricante) REFERENCES ivm(num_serie, fabricante) ON DELETE CASCADE,
-	FOREIGN KEY(nome) REFERENCES categoria(nome) ON DELETE CASCADE,
+	FOREIGN KEY(num_serie, fabricante) REFERENCES ivm(num_serie, fabricante) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY(nome) REFERENCES categoria(nome) ON DELETE CASCADE ON UPDATE CASCADE,
 	PRIMARY KEY(nro, num_serie, fabricante)
 );
 
 CREATE TABLE planograma (
 	ean CHAR(13) NOT NULL,
 	nro INT NOT NULL,
-	num_serie VARCHAR(255) NOT NULL,
+	num_serie SERIAL NOT NULL,
 	fabricante VARCHAR(255) NOT NULL,
 	faces INT NOT NULL,
 	unidades INT NOT NULL,
 	loc INT NOT NULL,
-	FOREIGN KEY(ean) REFERENCES produto(ean) ON DELETE CASCADE,
-	FOREIGN KEY(nro, num_serie, fabricante) REFERENCES prateleira(nro, num_serie, fabricante) ON DELETE CASCADE,
+	FOREIGN KEY(ean) REFERENCES produto(ean) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY(nro, num_serie, fabricante) REFERENCES prateleira(nro, num_serie, fabricante) ON DELETE CASCADE ON UPDATE CASCADE,
 	PRIMARY KEY(ean, nro, num_serie, fabricante)
 );
 
 CREATE TABLE retalhista (
-	tin INT NOT NULL,
+	tin SERIAL NOT NULL,
 	name VARCHAR(255) NOT NULL UNIQUE,
 	PRIMARY KEY(tin)
 );
 
 CREATE TABLE responsavel_por (
 	nome_cat VARCHAR(255) NOT NULL,
-	tin INT NOT NULL,
-	num_serie VARCHAR(255) NOT NULL,
+	tin SERIAL NOT NULL,
+	num_serie SERIAL NOT NULL,
 	fabricante VARCHAR(255) NOT NULL,
-	FOREIGN KEY(num_serie, fabricante) REFERENCES ivm(num_serie, fabricante) ON DELETE CASCADE,
-	FOREIGN KEY(tin) REFERENCES retalhista(tin) ON DELETE CASCADE,
-	FOREIGN KEY(nome_cat) REFERENCES categoria(nome) ON DELETE CASCADE,
-	PRIMARY KEY(nome_cat, num_serie, fabricante)
+	FOREIGN KEY(num_serie, fabricante) REFERENCES ivm(num_serie, fabricante) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY(tin) REFERENCES retalhista(tin) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY(nome_cat) REFERENCES categoria(nome) ON DELETE CASCADE ON UPDATE CASCADE,
+	PRIMARY KEY(num_serie, fabricante)
 );
 
 CREATE TABLE evento_reposicao (
 	ean CHAR(13) NOT NULL,
 	nro INT NOT NULL,
-	num_serie VARCHAR(255) NOT NULL,
+	num_serie SERIAL NOT NULL,
 	fabricante VARCHAR(255) NOT NULL,
 	instante TIMESTAMP NOT NULL,
 	unidades INT NOT NULL,
-	tin INT NOT NULL,
-	FOREIGN KEY(ean, nro, num_serie, fabricante) REFERENCES planograma(ean, nro, num_serie, fabricante) ON DELETE CASCADE,
-	FOREIGN KEY(tin) REFERENCES retalhista(tin) ON DELETE CASCADE,
+	tin SERIAL NOT NULL,
+	FOREIGN KEY(ean, nro, num_serie, fabricante) REFERENCES planograma(ean, nro, num_serie, fabricante) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY(tin) REFERENCES retalhista(tin) ON DELETE CASCADE ON UPDATE CASCADE,
 	PRIMARY KEY(ean, nro, num_serie, fabricante, instante)
 );
 
@@ -152,60 +154,62 @@ INSERT INTO categoria_simples VALUES ('Refrigerantes');
 INSERT INTO categoria_simples VALUES ('Salgados');
 INSERT INTO categoria_simples VALUES ('Sopas Take-Away');
 
-INSERT INTO produto VALUES ('2161546484063', 'Frango');
-INSERT INTO produto VALUES ('2748425344955', 'Agua');
-INSERT INTO produto VALUES ('3298630330148', 'Pao');
-INSERT INTO produto VALUES ('3765340111140', 'Croquete');
-INSERT INTO produto VALUES ('4823304474287', 'Sangria');
-INSERT INTO produto VALUES ('5555122201378', 'Caldo Verde');
-INSERT INTO produto VALUES ('6498529522754', 'Oreo');
-INSERT INTO produto VALUES ('6786407776628', 'Barra Proteina');
-INSERT INTO produto VALUES ('8379292605586', 'Sumo de Laranja');
+INSERT INTO produto VALUES ('2161546484063', 'Carnes', 'Frango');
+INSERT INTO produto VALUES ('2748425344955', 'Bebidas', 'Agua');
+INSERT INTO produto VALUES ('3298630330148', 'Comidas', 'Pao');
+INSERT INTO produto VALUES ('3765340111140', 'Salgados', 'Croquete');
+INSERT INTO produto VALUES ('4823304474287', 'Bebidas Alcoolicas', 'Sangria');
+INSERT INTO produto VALUES ('5555122201378', 'Sopas Take-Away', 'Caldo Verde');
+INSERT INTO produto VALUES ('6498529522754', 'Bolachas', 'Oreo');
+INSERT INTO produto VALUES ('6786407776628', 'Barras Energeticas', 'Barra Proteina');
+INSERT INTO produto VALUES ('8379292605586', 'Refrigerantes', 'Sumo de Laranja');
 
-INSERT INTO retalhista VALUES ('1', 'Joao Barroso');
-INSERT INTO retalhista VALUES ('2', 'Andre Martins');
-INSERT INTO retalhista VALUES ('3', 'Carolina Ferreira');
-INSERT INTO retalhista VALUES ('4', 'Manuel Lopes');
-INSERT INTO retalhista VALUES ('5', 'Pedro Silva');
-INSERT INTO retalhista VALUES ('6', 'Bernardo Soares');
+INSERT INTO retalhista (name) VALUES ('Joao Barroso');
+INSERT INTO retalhista (name) VALUES ('Andre Martins');
+INSERT INTO retalhista (name) VALUES ('Carolina Ferreira');
+INSERT INTO retalhista (name) VALUES ('Manuel Lopes');
 
-INSERT INTO ivm VALUES ('27828348', 'Pingo Doce');
-INSERT INTO ivm VALUES ('32956833', 'Continente');
-INSERT INTO ivm VALUES ('74639833', 'Aldi');
-INSERT INTO ivm VALUES ('76275876', 'CascaisShopping');
-INSERT INTO ivm VALUES ('86998436', 'OeirasPark');
-INSERT INTO ivm VALUES ('93999269', 'Lidl');
+INSERT INTO ivm (fabricante) VALUES ('Pingo Doce');
+INSERT INTO ivm (fabricante) VALUES ('Continente');
+INSERT INTO ivm (fabricante) VALUES ('Aldi');
+INSERT INTO ivm (fabricante) VALUES ('CascaisShopping');
+INSERT INTO ivm (fabricante) VALUES ('OeirasPark');
+INSERT INTO ivm (fabricante) VALUES ('Lidl');
+INSERT INTO ivm (fabricante) VALUES ('AlgarveShopping');
+INSERT INTO ivm (fabricante) VALUES ('Talho da Maria');
+INSERT INTO ivm (fabricante) VALUES ('Colombo');
+INSERT INTO ivm (fabricante) VALUES ('Amoreiras');
 
-INSERT INTO prateleira VALUES ('1', '27828348', 'Pingo Doce', '10', 'Comidas');
-INSERT INTO prateleira VALUES ('2', '27828348', 'Pingo Doce', '15', 'Sopas Take-Away');
-INSERT INTO prateleira VALUES ('3', '27828348', 'Pingo Doce', '12', 'Refrigerantes');
-INSERT INTO prateleira VALUES ('4', '27828348', 'Pingo Doce', '20', 'Bebidas');
-INSERT INTO prateleira VALUES ('5', '27828348', 'Pingo Doce', '18', 'Bebidas Alcoolicas');
-INSERT INTO prateleira VALUES ('1', '32956833', 'Continente', '17', 'Bolachas');
-INSERT INTO prateleira VALUES ('2', '32956833', 'Continente', '12', 'Doces');
-INSERT INTO prateleira VALUES ('3', '32956833', 'Continente', '10', 'Salgados');
-INSERT INTO prateleira VALUES ('4', '32956833', 'Continente', '8', 'Carnes');
-INSERT INTO prateleira VALUES ('5', '32956833', 'Continente', '4', 'Salgados');
-INSERT INTO prateleira VALUES ('1', '74639833', 'Aldi', '10', 'Sopas Take-Away');
-INSERT INTO prateleira VALUES ('2', '74639833', 'Aldi', '8', 'Salgados');
-INSERT INTO prateleira VALUES ('3', '74639833', 'Aldi', '2', 'Doces');
-INSERT INTO prateleira VALUES ('4', '74639833', 'Aldi', '12', 'Comidas');
-INSERT INTO prateleira VALUES ('5', '74639833', 'Aldi', '11', 'Bolachas');
-INSERT INTO prateleira VALUES ('1', '76275876', 'CascaisShopping', '8', 'Bebidas');
-INSERT INTO prateleira VALUES ('2', '76275876', 'CascaisShopping', '7', 'Barras Energeticas');
-INSERT INTO prateleira VALUES ('3', '76275876', 'CascaisShopping', '9', 'Doces');
-INSERT INTO prateleira VALUES ('4', '76275876', 'CascaisShopping', '5', 'Comidas');
-INSERT INTO prateleira VALUES ('5', '76275876', 'CascaisShopping', '12', 'Bebidas');
-INSERT INTO prateleira VALUES ('1', '86998436', 'OeirasPark', '11', 'Bebidas');
-INSERT INTO prateleira VALUES ('2', '86998436', 'OeirasPark', '2', 'Barras Energeticas');
-INSERT INTO prateleira VALUES ('3', '86998436', 'OeirasPark', '13', 'Doces');
-INSERT INTO prateleira VALUES ('4', '86998436', 'OeirasPark', '4', 'Comidas');
-INSERT INTO prateleira VALUES ('5', '86998436', 'OeirasPark', '17', 'Carnes');
-INSERT INTO prateleira VALUES ('1', '93999269', 'Lidl', '9', 'Bebidas');
-INSERT INTO prateleira VALUES ('2', '93999269', 'Lidl', '8', 'Salgados');
-INSERT INTO prateleira VALUES ('3', '93999269', 'Lidl', '17', 'Carnes');
-INSERT INTO prateleira VALUES ('4', '93999269', 'Lidl', '7', 'Bolachas');
-INSERT INTO prateleira VALUES ('5', '93999269', 'Lidl', '25', 'Salgados');
+INSERT INTO prateleira VALUES ('1', '1', 'Pingo Doce', '10', 'Comidas');
+INSERT INTO prateleira VALUES ('2', '1', 'Pingo Doce', '15', 'Sopas Take-Away');
+INSERT INTO prateleira VALUES ('3', '1', 'Pingo Doce', '12', 'Refrigerantes');
+INSERT INTO prateleira VALUES ('4', '1', 'Pingo Doce', '20', 'Bebidas');
+INSERT INTO prateleira VALUES ('5', '1', 'Pingo Doce', '18', 'Bebidas Alcoolicas');
+INSERT INTO prateleira VALUES ('1', '2', 'Continente', '17', 'Bolachas');
+INSERT INTO prateleira VALUES ('2', '2', 'Continente', '12', 'Doces');
+INSERT INTO prateleira VALUES ('3', '2', 'Continente', '10', 'Salgados');
+INSERT INTO prateleira VALUES ('4', '2', 'Continente', '8', 'Carnes');
+INSERT INTO prateleira VALUES ('5', '2', 'Continente', '4', 'Salgados');
+INSERT INTO prateleira VALUES ('1', '3', 'Aldi', '10', 'Sopas Take-Away');
+INSERT INTO prateleira VALUES ('2', '3', 'Aldi', '8', 'Salgados');
+INSERT INTO prateleira VALUES ('3', '3', 'Aldi', '2', 'Doces');
+INSERT INTO prateleira VALUES ('4', '3', 'Aldi', '12', 'Comidas');
+INSERT INTO prateleira VALUES ('5', '3', 'Aldi', '11', 'Bolachas');
+INSERT INTO prateleira VALUES ('1', '4', 'CascaisShopping', '8', 'Bebidas');
+INSERT INTO prateleira VALUES ('2', '4', 'CascaisShopping', '7', 'Barras Energeticas');
+INSERT INTO prateleira VALUES ('3', '4', 'CascaisShopping', '9', 'Doces');
+INSERT INTO prateleira VALUES ('4', '4', 'CascaisShopping', '5', 'Comidas');
+INSERT INTO prateleira VALUES ('5', '4', 'CascaisShopping', '12', 'Bebidas');
+INSERT INTO prateleira VALUES ('1', '5', 'OeirasPark', '11', 'Bebidas');
+INSERT INTO prateleira VALUES ('2', '5', 'OeirasPark', '2', 'Barras Energeticas');
+INSERT INTO prateleira VALUES ('3', '5', 'OeirasPark', '13', 'Doces');
+INSERT INTO prateleira VALUES ('4', '5', 'OeirasPark', '4', 'Comidas');
+INSERT INTO prateleira VALUES ('5', '5', 'OeirasPark', '17', 'Carnes');
+INSERT INTO prateleira VALUES ('1', '6', 'Lidl', '9', 'Bebidas');
+INSERT INTO prateleira VALUES ('2', '6', 'Lidl', '8', 'Salgados');
+INSERT INTO prateleira VALUES ('3', '6', 'Lidl', '17', 'Carnes');
+INSERT INTO prateleira VALUES ('4', '6', 'Lidl', '7', 'Bolachas');
+INSERT INTO prateleira VALUES ('5', '6', 'Lidl', '25', 'Salgados');
 
 INSERT INTO ponto_de_retalho VALUES ('Aldi - Oeiras', 'Lisboa', 'Oeiras');
 INSERT INTO ponto_de_retalho VALUES ('AlgarveShopping', 'Algarve', 'Portimão');
@@ -215,18 +219,18 @@ INSERT INTO ponto_de_retalho VALUES ('Galp - Oeiras', 'Lisboa', 'Oeiras');
 INSERT INTO ponto_de_retalho VALUES ('OeirasPark', 'Lisboa', 'Oeiras');
 INSERT INTO ponto_de_retalho VALUES ('Pingo Doce - Cascais', 'Lisboa', 'Cascais');
 
-INSERT INTO planograma VALUES ('2161546484063', '1', '27828348', 'Pingo Doce', '2', '10', '5');
-INSERT INTO planograma VALUES ('2161546484063', '4', '74639833', 'Aldi', '4', '20', '1');
-INSERT INTO planograma VALUES ('2161546484063', '4', '86998436', 'OeirasPark', '2', '15', '3');
-INSERT INTO planograma VALUES ('2748425344955', '1', '76275876', 'CascaisShopping', '6', '15', '2');
-INSERT INTO planograma VALUES ('2748425344955', '5', '76275876', 'CascaisShopping', '12', '25', '1');
+INSERT INTO planograma VALUES ('2161546484063', '1', '1', 'Pingo Doce', '2', '10', '5');
+INSERT INTO planograma VALUES ('2161546484063', '4', '3', 'Aldi', '4', '20', '1');
+INSERT INTO planograma VALUES ('2161546484063', '4', '5', 'OeirasPark', '2', '15', '3');
+INSERT INTO planograma VALUES ('2748425344955', '1', '4', 'CascaisShopping', '6', '15', '2');
+INSERT INTO planograma VALUES ('2748425344955', '5', '4', 'CascaisShopping', '12', '25', '1');
 
-INSERT INTO instalada_em VALUES ('27828348', 'Pingo Doce', 'Pingo Doce - Cascais');
-INSERT INTO instalada_em VALUES ('32956833', 'Continente', 'Continente - Tires');
-INSERT INTO instalada_em VALUES ('74639833', 'Aldi', 'Aldi - Oeiras');
-INSERT INTO instalada_em VALUES ('76275876', 'CascaisShopping', 'CascaisShopping');
-INSERT INTO instalada_em VALUES ('86998436', 'OeirasPark', 'OeirasPark');
-INSERT INTO instalada_em VALUES ('93999269', 'Lidl', 'CascaisShopping');
+INSERT INTO instalada_em VALUES ('1', 'Pingo Doce', 'Pingo Doce - Cascais');
+INSERT INTO instalada_em VALUES ('2', 'Continente', 'Continente - Tires');
+INSERT INTO instalada_em VALUES ('3', 'Aldi', 'Aldi - Oeiras');
+INSERT INTO instalada_em VALUES ('4', 'CascaisShopping', 'CascaisShopping');
+INSERT INTO instalada_em VALUES ('5', 'OeirasPark', 'OeirasPark');
+INSERT INTO instalada_em VALUES ('6', 'Lidl', 'CascaisShopping');
 
 INSERT INTO tem_categoria VALUES ('2161546484063', 'Comidas');
 INSERT INTO tem_categoria VALUES ('2161546484063', 'Carnes');
@@ -254,23 +258,17 @@ INSERT INTO tem_outra VALUES ('Comidas', 'Doces');
 INSERT INTO tem_outra VALUES ('Comidas', 'Salgados');
 INSERT INTO tem_outra VALUES ('Comidas', 'Sopas Take-Away');
 
-INSERT INTO evento_reposicao VALUES ('2161546484063', '1', '27828348', 'Pingo Doce', '2020-12-01 12:43:01', '9', '3');
-INSERT INTO evento_reposicao VALUES ('2161546484063', '4', '74639833', 'Aldi', '2020-12-02 21:14:02', '10', '2');
-INSERT INTO evento_reposicao VALUES ('2748425344955', '5', '76275876', 'CascaisShopping', '2020-12-03 12:17:30', '24', '4');
+INSERT INTO evento_reposicao VALUES ('2161546484063', '1', '1', 'Pingo Doce', '2020-12-01 12:43:01', '9', '3');
+INSERT INTO evento_reposicao VALUES ('2161546484063', '4', '3', 'Aldi', '2020-12-02 21:14:02', '10', '2');
+INSERT INTO evento_reposicao VALUES ('2748425344955', '5', '4', 'CascaisShopping', '2020-12-03 12:17:30', '24', '4');
 
-INSERT INTO responsavel_por VALUES ('Barras Energeticas', '3', '86998436', 'OeirasPark');
-INSERT INTO responsavel_por VALUES ('Bebidas Alcoolicas', '3', '27828348', 'Pingo Doce');
-INSERT INTO responsavel_por VALUES ('Bebidas', '2', '27828348', 'Pingo Doce');
-INSERT INTO responsavel_por VALUES ('Bolachas', '1', '32956833', 'Continente');
-INSERT INTO responsavel_por VALUES ('Bolachas', '3', '93999269', 'Lidl');
-INSERT INTO responsavel_por VALUES ('Carnes', '3', '93999269', 'Lidl');
-INSERT INTO responsavel_por VALUES ('Carnes', '4', '32956833', 'Continente');
-INSERT INTO responsavel_por VALUES ('Comidas', '1', '27828348', 'Pingo Doce');
-INSERT INTO responsavel_por VALUES ('Comidas', '5', '74639833', 'Aldi');
-INSERT INTO responsavel_por VALUES ('Doces', '2', '86998436', 'OeirasPark');
-INSERT INTO responsavel_por VALUES ('Doces', '3', '32956833', 'Continente');
-INSERT INTO responsavel_por VALUES ('Refrigerantes', '3', '27828348', 'Pingo Doce');
-INSERT INTO responsavel_por VALUES ('Salgados', '3', '32956833', 'Continente');
-INSERT INTO responsavel_por VALUES ('Salgados', '6', '74639833', 'Aldi');
-INSERT INTO responsavel_por VALUES ('Sopas Take-Away', '3', '74639833', 'Aldi');
-INSERT INTO responsavel_por VALUES ('Sopas Take-Away', '5', '27828348', 'Pingo Doce');
+INSERT INTO responsavel_por VALUES ('Barras Energeticas', '3', '5', 'OeirasPark');
+INSERT INTO responsavel_por VALUES ('Bebidas Alcoolicas', '3', '1', 'Pingo Doce');
+INSERT INTO responsavel_por VALUES ('Bolachas', '1', '2', 'Continente');
+INSERT INTO responsavel_por VALUES ('Bolachas', '3', '6', 'Lidl');
+INSERT INTO responsavel_por VALUES ('Comidas', '2', '3', 'Aldi');
+INSERT INTO responsavel_por VALUES ('Carnes', '3', '8', 'Talho da Maria');
+INSERT INTO responsavel_por VALUES ('Doces', '3', '4', 'CascaisShopping');
+INSERT INTO responsavel_por VALUES ('Refrigerantes', '3', '7', 'AlgarveShopping');
+INSERT INTO responsavel_por VALUES ('Salgados', '3', '9', 'Colombo');
+INSERT INTO responsavel_por VALUES ('Sopas Take-Away', '3', '10', 'Amoreiras');
