@@ -5,33 +5,12 @@ DROP TRIGGER IF EXISTS ri_5 ON evento_reposicao;
 CREATE OR REPLACE FUNCTION ri_1_proc()
 RETURNS TRIGGER
 AS $$
-DECLARE
-	cat_original VARCHAR(255);
-	cat VARCHAR(255);
-	super_cat VARCHAR(255);
-	contador INT;
 BEGIN
-	cat_original = new.nome_categoria;
-	cat = new.nome_categoria;
-	super_cat = new.nome_super_categoria;
-	contador = 1;
-
-	WHILE contador <> 0 LOOP
-		IF (SELECT nome_super_categoria FROM tem_outra WHERE nome_categoria = super_cat) = cat_original THEN
-			RAISE EXCEPTION	'Uma categoria não pode estar contida em si própria.';
-		END IF;
-
-		cat = super_cat;
-
-		SELECT nome_super_categoria INTO super_cat
+	IF (SELECT nome_super_categoria
 		FROM tem_outra
-		WHERE nome_categoria = cat;
-
-		SELECT COUNT(distinct nome_super_categoria) INTO contador
-		FROM tem_outra
-		WHERE nome_categoria = cat;
-
-	END LOOP;
+		WHERE nome_categoria = new.nome_super_categoria) = new.nome_categoria THEN
+		RAISE EXCEPTION	'Uma categoria não pode estar contida em si própria.';
+	END IF;
 
 	RETURN NEW;
 END
