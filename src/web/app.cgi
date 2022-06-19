@@ -100,6 +100,35 @@ def remover_categoria():
 		dbConn.close()
 
 
+@app.route('/adicionar_retalhista')
+def menu_adicionar_retalhista():
+	try:
+		return render_template("adicionar_retalhista.html",
+		                       params=request.args)
+	except Exception as e:
+		return str(e)
+
+
+@app.route('/adicionar_retalhista/update', methods=["POST"])
+def adicionar_retalhista():
+	dbConn = None
+	cursor = None
+	try:
+		dbConn = psycopg2.connect(DB_CONNECTION_STRING)
+		cursor = dbConn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+		name = request.form["name"]
+		query = 'INSERT INTO retalhista (name) VALUES (%s); '
+		data = (name, )
+		cursor.execute(query, data)
+		return query
+	except Exception as e:
+		return str(e)
+	finally:
+		dbConn.commit()
+		cursor.close()
+		dbConn.close()
+
+
 @app.route('/eventos_reposicao')
 def menu_eventos_reposicao():
 	dbConn = None
@@ -125,7 +154,10 @@ def eventos_reposicao():
 		dbConn = psycopg2.connect(DB_CONNECTION_STRING)
 		cursor = dbConn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 		num_serie = request.args.get("num_serie")
-		query = 'SELECT * FROM evento_reposicao WHERE num_serie = %s'
+		query = """SELECT nome, SUM(unidades)
+		FROM evento_reposicao NATURAL JOIN prateleira
+		WHERE num_serie = %s
+		GROUP BY nome"""
 		data = (num_serie, )
 		cursor.execute(query, data)
 		return render_template("listar_evento_reposicao.html", cursor=cursor)
@@ -162,7 +194,16 @@ def sub_categorias():
 		dbConn = psycopg2.connect(DB_CONNECTION_STRING)
 		cursor = dbConn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 		nome = request.args.get("nome")
-		query = 'SELECT nome_categoria FROM tem_outra WHERE nome_super_categoria = %s'
+		query = """WITH RECURSIVE sub_categorias AS (
+			SELECT nome_categoria
+			FROM tem_outra
+			WHERE nome_super_categoria = %s
+			UNION ALL
+			SELECT tem_outra.nome_categoria
+			FROM tem_outra
+			JOIN sub_categorias ON tem_outra.nome_super_categoria = sub_categorias.nome_categoria
+		)
+		SELECT * FROM sub_categorias"""
 		data = (nome, )
 		cursor.execute(query, data)
 		return render_template("listar_sub_categoria.html", cursor=cursor)
