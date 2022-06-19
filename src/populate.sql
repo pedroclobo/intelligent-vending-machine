@@ -95,7 +95,7 @@ CREATE TABLE planograma (
 	fabricante VARCHAR(255) NOT NULL,
 	faces INT NOT NULL,
 	unidades INT NOT NULL,
-	loc INT NOT NULL,
+	loc VARCHAR(255) NOT NULL,
 	FOREIGN KEY(ean) REFERENCES produto(ean) ON DELETE CASCADE ON UPDATE CASCADE,
 	FOREIGN KEY(nro, num_serie, fabricante) REFERENCES prateleira(nro, num_serie, fabricante) ON DELETE CASCADE ON UPDATE CASCADE,
 	PRIMARY KEY(ean, nro, num_serie, fabricante)
