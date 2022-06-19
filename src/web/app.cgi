@@ -41,8 +41,18 @@ def adicionar_categoria():
 		dbConn = psycopg2.connect(DB_CONNECTION_STRING)
 		cursor = dbConn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 		nome = request.form["nome"]
-		query = 'INSERT INTO categoria VALUES (%s)'
-		data = (nome, )
+		tipo = request.form["tipo"]
+
+		query = 'START TRANSACTION; INSERT INTO categoria VALUES (%s); '
+
+		if tipo == "categoria_simples":
+			query += 'INSERT INTO categoria_simples VALUES (%s); '
+		elif tipo == "super_categoria":
+			query += 'INSERT INTO super_categoria VALUES (%s); '
+
+		query += 'COMMIT'
+
+		data = (nome, nome)
 		cursor.execute(query, data)
 		return query
 	except Exception as e:

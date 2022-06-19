@@ -12,6 +12,20 @@
 		<h3>Adicionar Categoria</h3>
 		<form action="adicionar_categoria/update" method="post">
 			<p>Nome da Categoria: <input type="text" name="nome" /></p>
+			<input
+				type="radio"
+				id="categoria_simples"
+				name="tipo"
+				value="categoria_simples"
+			/>
+			<label for="categoria_simples">Categoria Simples</label>
+			<input
+				type="radio"
+				id="super_categoria"
+				name="tipo"
+				value="super_categoria"
+			/>
+			<label for="super_categoria">Super Categoria</label>
 			<p><input type="submit" value="Confirmar" /></p>
 		</form>
 	</body>
