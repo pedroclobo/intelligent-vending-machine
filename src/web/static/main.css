@@ -2,3 +2,18 @@ td {
 	text-align: center;
 	padding: 2px;
 }
+
+table {
+	border: 2px solid;
+    border-collapse: collapse;
+}
+
+td {
+	border: 1px solid;
+	padding: 5px;
+}
+
+th {
+	border: 1px solid;
+	padding: 5px;
+}

@@ -9,9 +9,48 @@
 		/>
 	</head>
 	<body>
-		<h3>Adicionar Retalhista</h3>
+		<h1>Adicionar Retalhista</h1>
 		<form action="adicionar_retalhista/update" method="post">
-			<p>Nome do Retalhsita: <input type="text" name="name" /></p>
+			<p>
+				TIN do Retalhista:
+				<input type="number" id="tin" name="tin" min="1" max="2147483647" />
+			</p>
+			<p>Nome do Retalhista: <input type="text" name="nome" /></p>
+			<br />
+			<p>
+				Selecione apenas uma categoria por par (Número de Série, Fabricante).
+			</p>
+			{% if cursor %}
+			<table>
+				<thead>
+					<tr>
+						<th>Número de Série</th>
+						<th>Fabricante</th>
+						<th>Categoria</th>
+						<th>Selecionar</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for record in cursor %}
+					<tr>
+						<td>{{ record[0] }}</td>
+						<td>{{ record[1] }}</td>
+						<td>{{ record[2] }}</td>
+						<td>
+							<input
+								type="checkbox"
+								id="option"
+								name="option"
+								value="{{ record[0] }}_{{ record[1] }}_{{ record[2] }}"
+							/>
+						</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			{% else %}
+			<p>Erro: não foi possível obter dados da base de dados!</p>
+			{% endif %}
 			<p><input type="submit" value="Confirmar" /></p>
 		</form>
 	</body>

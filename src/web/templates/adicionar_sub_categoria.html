@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Adicionar Sub-Categoria - Flask</title>
+		<link
+			rel="stylesheet"
+			href="{{ url_for('static', filename='main.css') }}"
+		/>
+	</head>
+	<body>
+		{% if cursor[0] and cursor[1] %}
+		<h1>Adicionar Sub-Categoria</h1>
+		<form action="adicionar_sub_categoria/update" method="post">
+			<h3>Escolha a Sub-Categoria</h3>
+			<table>
+				{% for record in cursor[0] %}
+				<tr>
+					<td>
+						<label for="sub_categoria">{{ record[0] }}</label>
+					</td>
+					<td>
+						<input
+							type="radio"
+							id="sub_categoria"
+							name="sub"
+							value="{{ record[0] }}"
+						/>
+					</td>
+				</tr>
+				{% endfor %}
+			</table>
+
+			<br />
+
+			<h3>Escolha a Super-Categoria</h3>
+			<table>
+				{% for record in cursor[1] %}
+				<tr>
+					<td>
+						<label for="super_categoria">{{ record[0] }}</label>
+					</td>
+					<td>
+						<input
+							type="radio"
+							id="super_categoria"
+							name="sup"
+							value="{{ record[0] }}"
+						/>
+					</td>
+				</tr>
+				{% endfor %}
+			</table>
+
+			<p><input type="submit" value="Confirmar" /></p>
+		</form>
+
+		{% else %}
+		<p>Erro: não foi possível obter dados da base de dados!</p>
+		{% endif %}
+	</body>
+</html>

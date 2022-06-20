@@ -2,19 +2,20 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<title>Rmover Categorias - Flask</title>
+		<title>Remover Sub-Categoria - Flask</title>
 		<link
 			rel="stylesheet"
 			href="{{ url_for('static', filename='main.css') }}"
 		/>
 	</head>
 	<body>
-		<h1>Remover Categoria</h1>
+		<h1>Remover Sub-Categoria</h1>
 		{% if cursor %}
 		<table>
 			<thead>
 				<tr>
-					<th>Nome</th>
+					<th>Super-Categoria</th>
+					<th>Sub-Categoria</th>
 					<th>Remover</th>
 				</tr>
 			</thead>
@@ -22,8 +23,12 @@
 				{% for record in cursor %}
 				<tr>
 					<td>{{ record[0] }}</td>
+					<td>{{ record[1] }}</td>
 					<td>
-						<a href="remover_categoria/update?nome={{ record[0] }}">Remover</a>
+						<a
+							href="remover_sub_categoria/update?sup={{ record[0] }}&sub={{ record[1] }}"
+							>Remover</a
+						>
 					</td>
 				</tr>
 				{% endfor %}

@@ -8,9 +8,10 @@
 			href="{{ url_for('static', filename='main.css') }}"
 		/>
 	</head>
-	<body style="padding: 20px">
+	<h1>IVM's</h1>
+	<body>
 		{% if cursor %}
-		<table border="2px">
+		<table>
 			<thead>
 				<tr>
 					<th>Número de Série</th>
@@ -24,7 +25,9 @@
 					<td>{{ record[0] }}</td>
 					<td>{{ record[1] }}</td>
 					<td>
-						<a href="eventos_reposicao/update?num_serie={{ record[0] }}">Listar</a>
+						<a href="eventos_reposicao/update?num_serie={{ record[0] }}"
+							>Listar</a
+						>
 					</td>
 				</tr>
 				{% endfor %}

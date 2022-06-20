@@ -181,6 +181,8 @@ INSERT INTO ivm (fabricante) VALUES ('AlgarveShopping');
 INSERT INTO ivm (fabricante) VALUES ('Talho da Maria');
 INSERT INTO ivm (fabricante) VALUES ('Colombo');
 INSERT INTO ivm (fabricante) VALUES ('Amoreiras');
+INSERT INTO ivm (fabricante) VALUES ('NorteShopping');
+INSERT INTO ivm (fabricante) VALUES ('Palacio do Gelo');
 
 INSERT INTO prateleira VALUES ('1', '1', 'Pingo Doce', '10', 'Comidas');
 INSERT INTO prateleira VALUES ('2', '1', 'Pingo Doce', '15', 'Sopas Take-Away');
