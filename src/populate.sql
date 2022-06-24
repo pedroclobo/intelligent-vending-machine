@@ -35,7 +35,6 @@ CREATE TABLE tem_outra (
 	nome_categoria VARCHAR(255) NOT NULL,
 	FOREIGN KEY(nome_super_categoria) REFERENCES super_categoria(nome) ON DELETE CASCADE ON UPDATE CASCADE,
 	FOREIGN KEY(nome_categoria) REFERENCES categoria(nome) ON DELETE CASCADE ON UPDATE CASCADE,
-	CHECK(nome_super_categoria <> nome_categoria),
 	PRIMARY KEY(nome_categoria)
 );
 
@@ -131,7 +130,7 @@ CREATE TABLE evento_reposicao (
 	PRIMARY KEY(ean, nro, num_serie, fabricante, instante)
 );
 
-INSERT INTO categoria VALUES ('Alimentação');
+INSERT INTO categoria VALUES ('Alimentacao');
 INSERT INTO categoria VALUES ('Barras Energeticas');
 INSERT INTO categoria VALUES ('Bebidas');
 INSERT INTO categoria VALUES ('Bebidas Alcoolicas');
@@ -143,7 +142,7 @@ INSERT INTO categoria VALUES ('Refrigerantes');
 INSERT INTO categoria VALUES ('Salgados');
 INSERT INTO categoria VALUES ('Sopas Take-Away');
 
-INSERT INTO super_categoria VALUES ('Alimentação');
+INSERT INTO super_categoria VALUES ('Alimentacao');
 INSERT INTO super_categoria VALUES ('Bebidas');
 INSERT INTO super_categoria VALUES ('Comidas');
 
@@ -232,7 +231,7 @@ INSERT INTO prateleira VALUES ('4', '10', 'Amoreiras', '19', 'Bolachas');
 INSERT INTO prateleira VALUES ('5', '10', 'Amoreiras', '12', 'Sopas Take-Away');
 
 INSERT INTO ponto_de_retalho VALUES ('Aldi - Oeiras', 'Lisboa', 'Oeiras');
-INSERT INTO ponto_de_retalho VALUES ('AlgarveShopping', 'Algarve', 'Portimão');
+INSERT INTO ponto_de_retalho VALUES ('AlgarveShopping', 'Algarve', 'Portimao');
 INSERT INTO ponto_de_retalho VALUES ('CascaisShopping', 'Lisboa', 'Cascais');
 INSERT INTO ponto_de_retalho VALUES ('Continente - Tires', 'Lisboa', 'Cascais');
 INSERT INTO ponto_de_retalho VALUES ('Galp - Oeiras', 'Lisboa', 'Oeiras');
@@ -282,8 +281,8 @@ INSERT INTO tem_categoria VALUES ('6786407776628', 'Barras Energeticas');
 INSERT INTO tem_categoria VALUES ('8379292605586', 'Bebidas');
 INSERT INTO tem_categoria VALUES ('8379292605586', 'Refrigerantes');
 
-INSERT INTO tem_outra VALUES ('Alimentação', 'Bebidas');
-INSERT INTO tem_outra VALUES ('Alimentação', 'Comidas');
+INSERT INTO tem_outra VALUES ('Alimentacao', 'Bebidas');
+INSERT INTO tem_outra VALUES ('Alimentacao', 'Comidas');
 INSERT INTO tem_outra VALUES ('Bebidas', 'Bebidas Alcoolicas');
 INSERT INTO tem_outra VALUES ('Bebidas', 'Refrigerantes');
 INSERT INTO tem_outra VALUES ('Comidas', 'Barras Energeticas');

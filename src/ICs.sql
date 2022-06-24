@@ -6,9 +6,7 @@ CREATE OR REPLACE FUNCTION ri_1_proc()
 RETURNS TRIGGER
 AS $$
 BEGIN
-	IF (SELECT nome_super_categoria
-		FROM tem_outra
-		WHERE nome_categoria = new.nome_super_categoria) = new.nome_categoria THEN
+	IF new.nome_super_categoria = new.nome_categoria THEN
 		RAISE EXCEPTION	'Uma categoria não pode estar contida em si própria.';
 	END IF;
 

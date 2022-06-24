@@ -15,7 +15,7 @@
 			<thead>
 				<tr>
 					<th>Número de Série</th>
-					<th>Fabrincante de Série</th>
+					<th>Fabricante de Série</th>
 					<th>Listar</th>
 				</tr>
 			</thead>
@@ -25,7 +25,7 @@
 					<td>{{ record[0] }}</td>
 					<td>{{ record[1] }}</td>
 					<td>
-						<a href="eventos_reposicao/update?num_serie={{ record[0] }}"
+						<a href="eventos_reposicao/update?num_serie={{ record[0] }}&fabricante={{ record[1] }}"
 							>Listar</a
 						>
 					</td>

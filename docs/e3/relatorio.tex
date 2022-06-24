@@ -1,8 +1,8 @@
 \documentclass{article}
 \usepackage[a4paper, margin=1in]{geometry}
-\usepackage{setspace}
-\usepackage{fancyvrb}
 \usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{setspace}
 
 \pagenumbering{gobble}
 
@@ -11,32 +11,161 @@
 \date{}
 \begin{document}
 
-	% Capa
-	\setstretch{2}
-	\maketitle
-	\begin{center}
-		{\LARGE Grupo 64}\\
-		\vspace{8mm}
-		{\LARGE Turno L08}\\
-		\vspace{8mm}
-		{\LARGE Prof. Miguel Garção Silva}\\
+% Capa
+\setstretch{2}
+\maketitle
+\begin{center}
+	{\LARGE Grupo 64}\\
+	\vspace{8mm}
+	{\LARGE Turno L08}\\
+	\vspace{8mm}
+	{\LARGE Prof. Miguel Garção Silva}\\
 
-		\vspace{7cm}
+	\vspace{7cm}
 
-		\begin{tabular}{|c|c|c|c|} \hline
-			\textbf{Aluno} & \textbf{Esforço (horas)} & \textbf{Esforço Relativo}\\ \hline
-			Bernardo Couto Melo (99057)	& 8 horas & 33\%\\ \hline
-			Guilherme Marques Pascoal (99079) & 8 horas & 33\%\\ \hline
-			Pedro Cerqueira Lobo (99115) & 8 horas & 33\%\\ \hline
-		\end{tabular}
+	\begin{tabular}{|c|c|c|c|} \hline
+		\textbf{Aluno}                    & \textbf{Esforço (horas)} & \textbf{Esforço Relativo} \\ \hline
+		Bernardo Couto Melo (99057)       & 12 horas                 & 33\%                      \\ \hline
+		Guilherme Marques Pascoal (99079) & 12 horas                 & 33\%                      \\ \hline
+		Pedro Cerqueira Lobo (99115)      & 12 horas                 & 33\%                      \\ \hline
+	\end{tabular}
 
-	\end{center}
+\end{center}
 
-	\pagebreak
+\pagebreak
 
+\setstretch{1.5}
+
+\section{Desenvolvimento da Aplicação}
+A aplicação foi desenvolvida utilizando \emph{HTML}, \emph{CSS}, \emph{Python} e o framework \emph{Flask}.\\
+Todos os ficheiros necessários para o funcionamento da aplicação encontram-se
+na pasta web. Os ficheiros \emph{HTML} estão na subdiretoria \texttt{templates}.
+Existe também um ficheiro \emph{CSS} na subdiretoria \texttt{static} que visa tornar
+mais apelativa a interface da aplicação.
+Os detalhes da base de dados encontram-se no cabeçalho do ficheiro \texttt{app.cgi}.
+
+A página inicial corresponde ao ficheiro \texttt{menu.html} apresenta ao
+utilizador os submenus onde é possível realizar todas as operações exigidas.
+
+O requisito a) corresponde às opções:
+\begin{itemize}[leftmargin=+1.5cm]
 	\setstretch{1}
-	\section*{Esquema}
+	\item Adicionar Categoria
+	\item Remover Categoria
+	\item Adicionar Sub-Categoria
+	\item Remover Sub-Categoria
+\end{itemize}
 
-	\VerbatimInput[tabsize=4]{../../src/populate.sql}
+O requisito b) corresponde às opções:
+\begin{itemize}[leftmargin=+1.5cm]
+	\setstretch{1}
+	\item Adicionar Retalhistas
+	\item Remover Retalhistas
+\end{itemize}
+
+O requisito c) corresponde à opção:
+\begin{itemize}[leftmargin=+1.5cm]
+	\setstretch{1}
+	\item Listar Eventos de Reposição
+\end{itemize}
+
+O requisito d) corresponde à opção:
+\begin{itemize}[leftmargin=+1.5cm]
+	\setstretch{1}
+	\item Listar Sub-Categorias
+\end{itemize}
+
+Ao realizar um operação com êxito não é apresentada nenhuma mensagem de sucesso
+ao utilizador. Em vez disso, o utilizador é reencaminhado para o menu principal.
+Se uma operação não for executada com êxito, é mostrada ao utilizador a mensagem
+de erro emitida pelo SGBD.
+
+
+\subsection{Menu Principal}
+O utilizador é recebido com um menu principal, a partir do qual pode aceder a
+todos os submenus, onde pode realizar todas as operações suportadas.
+
+\subsection{Adicionar Categoria}
+O utilizador é apresentado com uma caixa de texto, onde insere o nome categoria
+a ser criada e um menu de opção, onde especifica se esta se trata de uma categoira
+simples ou super categoria. Ao carregar no botão \texttt{Confirmar}, a categoria
+é adicionada ao sistema.
+
+\subsection{Remover Categoria}
+É apresentada uma tabela com todas as categorias, com um botão \texttt{Remover},
+junto a cada uma delas. Ao carregar nesse botão, o utilizador remove a categoria
+do sistema.
+
+\subsection{Adicionar Sub-Categoria}
+São apresentadas duas tabelas. Na primeiram seleciona-se apenas uma das
+sub-categorias e na segunda apenas uma das super-categorias. Ao carregar no botão
+\texttt{Confirmar}, a sub-categoria selecionada é guardada como sub-categoria da
+super-categoria selecionada.
+
+\subsection{Remover Sub-Categoria}
+É apresentada uma tabela com as várias relações \texttt{Super-Categoria/Sub-Categoria}.
+Ao clicar no botão \texttt{Remover}, junto a cada uma destas relações, a cada uma das entradas da lista, a relação entre as duas categorias apresentadas é removida do sistema.
+
+\subsection{Adicionar Retalhista}
+São apresentadas uma caixa de input numérico, que recebe o TIN do retalhista,
+uma caixa de texto para inserir o nome do mesmo e, por fim, uma tabela.
+A tabela é originada através de um produto cartesiano de todas as IVM's,
+ainda sem retalhista responsável, com todas as categorias registadas no sistema.
+Isto permite uma mais fácil utilização da aplicação por parte do utilizador, pois
+diminui os possíveis erros que este pode cometer ao introduzir os vários campos
+requisitados. Contudo, incorretamente, o utilizador pode selecionar a mesma IVM,
+para duas categorias diferentes. Para evitar isto, é apresentado ao utilizador um
+aviso, imediatamente acima da tabela.
+Selecionar uma ou mais entradas da tabela, equivale a tornar o retalhista
+reponsável pela categoria selecionada, na IVM em questão.
+Ao carregar no botão \texttt{Confirmar}, é adicionado um retalhista, com todas
+essas responsabilidades.
+
+\subsection{Remover Retalhista}
+É apresentada uma lista com os vários retalhistas.
+Ao clicar no botão \texttt{Remover}, junto a cada um deles, o retalhista é
+removido do sistema.
+
+\subsection{Listar Eventos de Reposição}
+É apresentada uma lista com as várias IVM's. Ao clicar no botão \texttt{Listar},
+junto a cada uma das IVM's, o utilizador é reencaminhado para uma página, onde
+são listados todos os eventos de reposição que dizem respeito a essa IVM.
+
+\subsection{Listar Sub-Categorias}
+É apresentada uma lista com as várias super-categorias existentes no sistema.
+Ao clicar no botão \texttt{Listar}, junto a cada uma delas, o utilizador é
+reencaminhado para uma página onde são listadas todas as sub-categorias da
+super-categoria selecionada, a todos os níveis de profundidade.
+
+\subsection{Link}
+\href{https://web2.ist.utl.pt/ist199115/app.cgi/}{https://web2.ist.utl.pt/ist199115/app.cgi/}
+
+
+\pagebreak
+
+\section{Índices}
+\subsection*{Consulta 7.1}
+\begin{verbatim}
+	CREATE INDEX idx_tin_nome_cat ON responsavel_por USING HASH(tin, nome_cat);
+	CREATE INDEX idx_nome ON retalhista(nome);
+\end{verbatim}
+
+\begin{itemize}
+	\item As condições de filtragem sugerem a utilização de um índice em \texttt{tin}, para ambas as tabelas ou a utilização de um índice em \texttt{nome\_cat} para a tabela \texttt{responsavel\_por}. Obtámos por criar um índice de chave composta em \texttt{(tin, nome\_cat}) em \texttt{responsavel\_por}. Aproveitando o índice criado implicitamente na chave primária de \texttt{tin} em \texttt{retalhista}, a condição de filtragem será otimizada. O índice será não ordenado e de dispersão (\emph{HASH}), devido à igualdade da condição de filtragem.
+	\item Poderia ser apenas utilizado um índice de dispersão apenas sobre o atributo \texttt{nome\_cat} ou apenas sobre o atributo \texttt{tin} de \texttt{responsavel\_por}, dependendo da seletividade de cada coluna.
+	\item O uso de \texttt{DISTINCT} provoca uma ordenação, pelo que o uso de um índice de \texttt{nome} em \texttt{retalhista} pode acelerar a consulta. O índice será não ordenado e Btree.
+\end{itemize}
+
+\subsection*{Consulta 7.2}
+\begin{verbatim}
+	CREATE INDEX idx_desc ON produto(desc);
+	CREATE INDEX idx_nome_ean ON tem_categoria(nome, ean);
+\end{verbatim}
+
+\begin{itemize}
+	\item Poderá ser criado um índice de \texttt{desc} em \texttt{produto}, de modo a tirar partido de que a \texttt{desc} pretendida começa por `A'. O índice será não ordenado e Btree.
+	\item A consulta beneficiaria também de um índice de \texttt{(nome, ean)} em \texttt{tem\_categoria}, de modo a otimizar a operação de agregação. O índice será não ordenado e Btree.
+	\item É de notar que o índice criado implicitamente sobre \texttt{(ean, nome)} em \texttt{tem\_categoria} não traria o mesmo benefício que o índice anteriormente referido pois, neste \texttt{nome} surge depois de \texttt{ean}.
+\end{itemize}
 
 \end{document}

@@ -2,15 +2,15 @@
 
 from wsgiref.handlers import CGIHandler
 from flask import Flask
-from flask import render_template, request
+from flask import render_template, request, redirect, url_for
 import psycopg2
 import psycopg2.extras
 
-from auth import DB_USER, DB_PASSWORD
-
 ## SGBD configs
 DB_HOST = "db.tecnico.ulisboa.pt"
+DB_USER = ""
 DB_DATABASE = DB_USER
+DB_PASSWORD = ""
 DB_CONNECTION_STRING = "host=%s dbname=%s user=%s password=%s" % (
     DB_HOST, DB_DATABASE, DB_USER, DB_PASSWORD)
 
@@ -54,7 +54,7 @@ def adicionar_categoria():
 
 		data = (nome, nome)
 		cursor.execute(query, data)
-		return query
+		return redirect(url_for("menu_principal"))
 	except Exception as e:
 		return str(e)
 	finally:
@@ -91,7 +91,7 @@ def remover_categoria():
 		query = "DELETE FROM categoria WHERE nome = %s;"
 		data = (nome, )
 		cursor.execute(query, data)
-		return query
+		return redirect(url_for("menu_principal"))
 	except Exception as e:
 		return str(e)
 	finally:
@@ -135,7 +135,7 @@ def adicionar_sub_categoria():
 		query = "INSERT INTO tem_outra VALUES (%s, %s);"
 		data = (sup, sub)
 		cursor.execute(query, data)
-		return query
+		return redirect(url_for("menu_principal"))
 	except Exception as e:
 		return str(e)
 	finally:
@@ -175,7 +175,7 @@ def remover_sub_categoria():
 			AND nome_categoria = %s;"""
 		data = (sup, sub)
 		cursor.execute(query, data)
-		return query
+		return redirect(url_for("menu_principal"))
 	except Exception as e:
 		return str(e)
 	finally:
@@ -232,7 +232,7 @@ def adicionar_retalhista():
 
 		query += "COMMIT;"
 		cursor.execute(query, data)
-		return query
+		return redirect(url_for("menu_principal"))
 	except Exception as e:
 		return str(e)
 	finally:
@@ -270,7 +270,7 @@ def remover_retalhista():
 		WHERE tin = %s;"""
 		data = (tin, )
 		cursor.execute(query, data)
-		return query
+		return redirect(url_for("menu_principal"))
 	except Exception as e:
 		return str(e)
 	finally:
@@ -304,11 +304,12 @@ def eventos_reposicao():
 		dbConn = psycopg2.connect(DB_CONNECTION_STRING)
 		cursor = dbConn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 		num_serie = request.args.get("num_serie")
+		fabricante = request.args.get("fabricante")
 		query = """SELECT nome, SUM(unidades)
 		FROM evento_reposicao NATURAL JOIN prateleira
-		WHERE num_serie = %s
+		WHERE num_serie = %s AND fabricante = %s
 		GROUP BY nome;"""
-		data = (num_serie, )
+		data = (num_serie, fabricante)
 		cursor.execute(query, data)
 		return render_template("listar_evento_reposicao.html", cursor=cursor)
 	except Exception as e:
@@ -354,7 +355,8 @@ def sub_categorias():
 			JOIN sub_categorias ON
 				tem_outra.nome_super_categoria = sub_categorias.nome_categoria
 		)
-		SELECT * FROM sub_categorias;"""
+		SELECT * FROM sub_categorias
+		ORDER BY nome_categoria;"""
 		data = (nome, )
 		cursor.execute(query, data)
 		return render_template("listar_sub_categoria.html", cursor=cursor)
