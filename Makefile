@@ -10,7 +10,7 @@ all:: zip
 	(cd docs/e3 && pdflatex relatorio.tex && mv relatorio.pdf 64-relatorio.pdf)
 
 clean::
-	(rm -f docs/e1/delivery-01-64.pdf docs/e1/cover.pdf docs/e2/delivery-02-64.pdf docs/e3/64-relatorio.pdf entregay-03-64.zip && find . | egrep '*.aux|*.log|*.nav|*.out|*.snm|*.toc' | grep -v "git" | xargs \rm -f)
+	(rm -f docs/e1/delivery-01-64.pdf docs/e1/cover.pdf docs/e2/delivery-02-64.pdf docs/e3/64-relatorio.pdf entregay-03-64.zip && find . | egrep '\*.aux|\*.log|\*.nav|\*.out|\*.snm|\*.toc' | grep -v "git" | xargs \rm -f)
 
 zip:: 3
 	(zip -j entregay-03-64.zip docs/e3/64-relatorio.pdf src/*.sql && cd src/ && zip -r ../entregay-03-64 web)
